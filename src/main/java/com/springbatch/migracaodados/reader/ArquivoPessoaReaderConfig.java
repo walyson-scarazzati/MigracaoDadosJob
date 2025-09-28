@@ -41,12 +41,21 @@ public class ArquivoPessoaReaderConfig {
 				String dataNascimentoStr = fieldSet.readString("dataNascimento");
 				Date dataNascimento = null;
 				if (dataNascimentoStr != null && !dataNascimentoStr.trim().isEmpty()) {
-					try {
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						sdf.setLenient(false);
-						dataNascimento = sdf.parse(dataNascimentoStr.trim());
-					} catch (ParseException e) {
-						throw new RuntimeException("Erro ao converter dataNascimento: '" + dataNascimentoStr + "' na linha: " + fieldSet.getValues() + ", erro: " + e.getMessage(), e);
+					ParseException lastException = null;
+					String[] formatos = {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"};
+					for (String formato : formatos) {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat(formato);
+							sdf.setLenient(false);
+							dataNascimento = sdf.parse(dataNascimentoStr.trim());
+							lastException = null;
+							break;
+						} catch (ParseException e) {
+							lastException = e;
+						}
+					}
+					if (lastException != null) {
+						throw new RuntimeException("Erro ao converter dataNascimento: '" + dataNascimentoStr + "' na linha: " + java.util.Arrays.toString(fieldSet.getValues()) + ", erro: " + lastException.getMessage(), lastException);
 					}
 				}
 				pessoa.setDataNascimento(dataNascimento);
