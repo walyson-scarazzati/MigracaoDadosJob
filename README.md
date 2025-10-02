@@ -1,4 +1,5 @@
 # MigracaoDadosJob
+Project from "Curso Otimização de desempenho para jobs Spring Batch" - Udemy: https://www.udemy.com/course/otimizacao-de-desempenho-para-jobs-spring-batch/
 
 This project is a Spring Batch application for migrating data, specifically handling the processing of people and bank data from CSV files. It demonstrates chunk-oriented processing, custom readers, processors, and writers, as well as transaction management with a custom transaction manager.
 
